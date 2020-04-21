@@ -6,10 +6,14 @@ parametersFileName = '../data/synthesisParameters.mat';
 
 projectionFileName = '../data/tsneProjection2d.mat';
 
+soundFileListFileName = '../data/soundFileList.mat';
+
 data = load(dataFileName);
 features = data.features;
 data = load(parametersFileName);
 parameters = data.parameters;
+data = load(soundFileListFileName);
+soundFileList = data.fileList;
 
 %%
 recompute = 0
@@ -33,10 +37,12 @@ end
 
 clf
 hold on
-scatter(p(:, 1), p(:, 2), 30,  'filled')
+scatter(p(:, 1), p(:, 2), 30,  'filled',...
+    'ButtonDownFcn', {@playSoundFromPlot,soundFileList})
 r1 = randn(length(optiSelector), 1);
 r2 = randn(length(optiSelector), 1);
-scatter(p(optiSelector, 1)+r1*5, p(optiSelector, 2)+r2*5, 120,  'filled')
+scatter(p(optiSelector, 1)+r1*5, p(optiSelector, 2)+r2*5, 120,  'filled',...
+    'ButtonDownFcn', {@playSoundFromPlot,soundFileList(optiSelector)})
 hold off
 set(gcf, 'Color', 'w');
 export_fig ../figures/optimalRandomized.png
